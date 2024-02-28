@@ -12,3 +12,13 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Alert {
+  id        String   @id @default(uuid()) @map("_id")
+  createdAt DateTime @default(now())
+
+  email    String
+  crypto   String
+  price    Float
+  currency String
+}
