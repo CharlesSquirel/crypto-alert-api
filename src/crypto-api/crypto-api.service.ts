@@ -1,5 +1,10 @@
 import { HttpService } from '@nestjs/axios';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { catchError, lastValueFrom, map } from 'rxjs';
 
 @Injectable()
@@ -19,8 +24,21 @@ export class CryptoApiService {
       )
       .pipe(
         map((response) => response.data),
-        catchError(() => {
-          throw new ForbiddenException('API not available');
+        catchError((error) => {
+          if (error.response && error.response.status) {
+            const statusCode = error.response.status;
+            if (statusCode === 400) {
+              throw new BadRequestException('Bad request to API');
+            } else if (statusCode === 403) {
+              throw new ForbiddenException('Unauthorized access to API');
+            } else {
+              throw new InternalServerErrorException(
+                'Unexpected error occurred',
+              );
+            }
+          } else {
+            throw new InternalServerErrorException('Unexpected error occurred');
+          }
         }),
       );
     const data = await lastValueFrom(request);
