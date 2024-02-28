@@ -15,6 +15,11 @@ export class CryptoApiService {
     const headers = {
       'X-CMC_PRO_API_KEY': process.env.CRYPTO_KEY,
     };
+
+    if (!process.env.CRYPTO_KEY) {
+      throw new Error('CRYPTO_KEY environment variable is not set');
+    }
+
     const request = this.http
       .get(
         `https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest`,

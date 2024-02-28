@@ -5,7 +5,6 @@ import { CryptoApiController } from './crypto-api.controller';
 
 @Module({
   imports: [HttpModule],
-  exports: [CryptoApiModule],
   providers: [CryptoApiService],
   controllers: [CryptoApiController],
 })
