@@ -13,7 +13,6 @@ export class AlertsService {
   async createAlert(createAlertDto: CreateAlertDto) {
     try {
       const { email, crypto, price, currency } = createAlertDto;
-      await console.log('body:', email);
 
       const existingAlert = await this.prisma.alert.findFirst({
         where: {
@@ -25,7 +24,6 @@ export class AlertsService {
       });
 
       if (existingAlert) {
-        console.log('istnieje rekord', existingAlert);
         throw new ConflictException(
           'Alert already exists with the same parameters.',
         );
@@ -40,7 +38,6 @@ export class AlertsService {
         },
       });
     } catch (error) {
-      console.log('service szwankuje', error);
       throw new ConflictException('Failed to create alert.');
     }
   }

@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Get,
   InternalServerErrorException,
@@ -10,7 +11,7 @@ import { Alert } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
 import { CreateAlertDto } from './dto';
 
-@Controller('alert')
+@Controller('alerts')
 export class AlertsController {
   constructor(
     private alertService: AlertsService,
@@ -25,9 +26,11 @@ export class AlertsController {
       return alert;
     } catch (error) {
       if (error.code === 'P2002') {
-        throw new InternalServerErrorException('Failed to create alert.');
+        throw new ConflictException(
+          'Alert already exists with the same parameters.',
+        );
       }
-      throw new InternalServerErrorException('Failed to send email.');
+      throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }
 
