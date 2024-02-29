@@ -14,8 +14,8 @@ datasource db {
 }
 
 model Alert {
-  id        String   @id @default(uuid()) @map("_id")
-  createdAt DateTime @default(now())
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  // createdAt DateTime @default(now())
 
   email    String
   crypto   String
