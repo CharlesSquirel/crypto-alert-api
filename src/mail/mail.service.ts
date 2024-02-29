@@ -16,10 +16,10 @@ export class MailService {
 
       const template =
         type === 'create'
-          ? `./templates/creation-alert`
+          ? `./creation-alert`
           : type === 'delete'
-          ? './templates/delete-alert'
-          : './templates/reached-alert';
+          ? './delete-alert'
+          : './reached-alert';
 
       await this.mailerService.sendMail({
         to: process.env.EMAIL,
