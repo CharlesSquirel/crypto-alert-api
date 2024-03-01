@@ -6,7 +6,6 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Alert } from '@prisma/client';
 import { CreateAlertDto } from './dto';
-import { error } from 'console';
 
 @Injectable()
 export class AlertsService {
