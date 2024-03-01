@@ -4,6 +4,8 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  NotFoundException,
+  Param,
   Post,
 } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
@@ -34,8 +36,16 @@ export class AlertsController {
     }
   }
 
-  @Get()
-  async getAllAlerts(): Promise<Alert[]> {
-    return this.alertService.getAllAlerts();
+  @Get(':email')
+  async getAllAlerts(@Param('email') email: string): Promise<Alert[]> {
+    try {
+      const alerts = await this.alertService.getAlertByEmail(email);
+      if (!alerts || alerts.length === 0) {
+        throw new NotFoundException(`Alerts not found for email: ${email}`);
+      }
+      return alerts;
+    } catch (error) {
+      throw new InternalServerErrorException('An unexpected error occurred.');
+    }
   }
 }
