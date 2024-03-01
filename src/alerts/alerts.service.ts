@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Alert } from '@prisma/client';
 import { CreateAlertDto } from './dto';
@@ -8,13 +12,21 @@ export class AlertsService {
   constructor(private prisma: PrismaService) {}
 
   async getAlertByEmail(email: string): Promise<Alert[]> {
-    const result = await this.prisma.alert.findMany({
-      where: {
-        email,
-      },
-    });
-    return result;
+    try {
+      const result = await this.prisma.alert.findMany({
+        where: {
+          email,
+        },
+      });
+      if (!result || result.length === 0) {
+        throw new NotFoundException(`Alerts not found for email: ${email}`);
+      }
+      return result;
+    } catch (error) {
+      throw new ConflictException('Failed to get alerts.');
+    }
   }
+
   async createAlert(createAlertDto: CreateAlertDto) {
     try {
       const { email, crypto, price, currency } = createAlertDto;
