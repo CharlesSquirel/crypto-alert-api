@@ -47,7 +47,6 @@ export class AlertsService {
       });
 
       if (existingAlert) {
-        console.log(error);
         throw new ConflictException(
           'Alert already exists with the same parameters.',
         );
@@ -62,7 +61,6 @@ export class AlertsService {
         },
       });
     } catch (error) {
-      console.log(error);
       throw new ConflictException('Failed to create alert.');
     }
   }
@@ -74,6 +72,9 @@ export class AlertsService {
           id,
         },
       });
+      if (!alert) {
+        throw new NotFoundException(`Alert with ID ${id} not found.`);
+      }
       return alert;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -92,13 +93,13 @@ export class AlertsService {
         },
       });
 
+      if (!deletedAlert) {
+        throw new NotFoundException(`Alert with ID ${id} not found.`);
+      }
+
       return deletedAlert;
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      } else {
-        throw new ConflictException('Failed to delete alert.');
-      }
+      throw new ConflictException('Failed to delete alert.');
     }
   }
 }

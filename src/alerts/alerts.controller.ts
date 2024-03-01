@@ -59,17 +59,16 @@ export class AlertsController {
   async deleteAlert(@Param('id') id: string): Promise<{ msg: string }> {
     try {
       const alert = await this.alertService.getAlertById(id);
+      if (!alert) {
+        throw new NotFoundException(`Alert with ID ${id} not found.`);
+      }
       await this.alertService.deleteAlert(id);
       await this.mailService.sendEmail('delete', { id, email: alert.email });
       return {
         msg: 'Alert succesfully deleted',
       };
     } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      } else {
-        throw new ConflictException('Failed to delete alert.');
-      }
+      throw new ConflictException('Failed to delete alert.');
     }
   }
 }
