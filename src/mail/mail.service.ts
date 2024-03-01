@@ -1,11 +1,19 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 
+type EmailType = 'create' | 'delete' | 'reached';
+
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendEmail(type: 'create' | 'delete' | 'reached') {
+  async sendEmail(
+    type: EmailType,
+    context?: {
+      id?: string;
+      email?: string;
+    },
+  ) {
     try {
       const subject =
         type === 'create'
@@ -25,6 +33,7 @@ export class MailService {
         to: process.env.EMAIL,
         subject,
         template,
+        context,
       });
     } catch (error) {
       console.error(`Error sending email: ${error}`);

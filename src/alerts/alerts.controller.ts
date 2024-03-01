@@ -21,7 +21,12 @@ export class AlertsController {
     private mailService: MailService,
   ) {}
 
-  @Post('create')
+  @Get()
+  async getAllAlerts() {
+    return await this.alertService.getAllAlerts();
+  }
+
+  @Post()
   async createAlert(@Body() createAlertDto: CreateAlertDto) {
     try {
       const alert = await this.alertService.createAlert(createAlertDto);
@@ -38,7 +43,7 @@ export class AlertsController {
   }
 
   @Get(':email')
-  async getAllAlerts(@Param('email') email: string): Promise<Alert[]> {
+  async getAlertsByEmail(@Param('email') email: string): Promise<Alert[]> {
     try {
       const alerts = await this.alertService.getAlertByEmail(email);
       if (!alerts || alerts.length === 0) {
@@ -51,9 +56,14 @@ export class AlertsController {
   }
 
   @Delete(':id')
-  async deleteAlert(@Param('id') id: string): Promise<void> {
+  async deleteAlert(@Param('id') id: string): Promise<{ msg: string }> {
     try {
-      const deletedAlert = await this.alertService.deleteAlert(id);
+      const alert = await this.alertService.getAlertById(id);
+      await this.alertService.deleteAlert(id);
+      await this.mailService.sendEmail('delete', { id, email: alert.email });
+      return {
+        msg: 'Alert succesfully deleted',
+      };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

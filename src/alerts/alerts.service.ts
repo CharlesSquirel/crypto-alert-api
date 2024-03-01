@@ -6,10 +6,16 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Alert } from '@prisma/client';
 import { CreateAlertDto } from './dto';
+import { error } from 'console';
 
 @Injectable()
 export class AlertsService {
   constructor(private prisma: PrismaService) {}
+
+  async getAllAlerts() {
+    const alerts = await this.prisma.alert.findMany();
+    return alerts;
+  }
 
   async getAlertByEmail(email: string): Promise<Alert[]> {
     try {
@@ -41,6 +47,7 @@ export class AlertsService {
       });
 
       if (existingAlert) {
+        console.log(error);
         throw new ConflictException(
           'Alert already exists with the same parameters.',
         );
@@ -55,7 +62,25 @@ export class AlertsService {
         },
       });
     } catch (error) {
+      console.log(error);
       throw new ConflictException('Failed to create alert.');
+    }
+  }
+
+  async getAlertById(id: string) {
+    try {
+      const alert = await this.prisma.alert.findFirst({
+        where: {
+          id,
+        },
+      });
+      return alert;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      } else {
+        throw new ConflictException('Failed to delete alert.');
+      }
     }
   }
 
@@ -66,6 +91,7 @@ export class AlertsService {
           id,
         },
       });
+
       return deletedAlert;
     } catch (error) {
       if (error instanceof NotFoundException) {
