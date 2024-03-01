@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Param,
   Post,
 } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
@@ -34,8 +35,8 @@ export class AlertsController {
     }
   }
 
-  @Get()
-  async getAllAlerts(): Promise<Alert[]> {
-    return this.alertService.getAllAlerts();
+  @Get(':email')
+  async getAllAlerts(@Param('email') email: string): Promise<Alert[]> {
+    return await this.alertService.getAlertByEmail(email);
   }
 }

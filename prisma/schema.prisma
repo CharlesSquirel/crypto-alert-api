@@ -14,11 +14,10 @@ datasource db {
 }
 
 model Alert {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  // createdAt DateTime @default(now())
-
-  email    String
-  crypto   String
-  price    Float
-  currency String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  email     String
+  crypto    String
+  price     Float
+  currency  String
 }

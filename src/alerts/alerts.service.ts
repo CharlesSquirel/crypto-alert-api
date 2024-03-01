@@ -6,8 +6,13 @@ import { CreateAlertDto } from './dto';
 @Injectable()
 export class AlertsService {
   constructor(private prisma: PrismaService) {}
-  async getAllAlerts(): Promise<Alert[]> {
-    const result = await this.prisma.alert.findMany();
+
+  async getAlertByEmail(email: string): Promise<Alert[]> {
+    const result = await this.prisma.alert.findMany({
+      where: {
+        email,
+      },
+    });
     return result;
   }
   async createAlert(createAlertDto: CreateAlertDto) {
