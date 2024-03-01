@@ -58,4 +58,21 @@ export class AlertsService {
       throw new ConflictException('Failed to create alert.');
     }
   }
+
+  async deleteAlert(id: string) {
+    try {
+      const deletedAlert = await this.prisma.alert.delete({
+        where: {
+          id,
+        },
+      });
+      return deletedAlert;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      } else {
+        throw new ConflictException('Failed to delete alert.');
+      }
+    }
+  }
 }

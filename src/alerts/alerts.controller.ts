@@ -2,6 +2,7 @@ import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   NotFoundException,
@@ -46,6 +47,19 @@ export class AlertsController {
       return alerts;
     } catch (error) {
       throw new InternalServerErrorException('An unexpected error occurred.');
+    }
+  }
+
+  @Delete(':id')
+  async deleteAlert(@Param('id') id: string): Promise<void> {
+    try {
+      const deletedAlert = await this.alertService.deleteAlert(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      } else {
+        throw new ConflictException('Failed to delete alert.');
+      }
     }
   }
 }
