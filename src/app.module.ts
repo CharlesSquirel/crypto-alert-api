@@ -5,6 +5,7 @@ import { MailModule } from './mail/mail.module';
 import { AlertsModule } from './alerts/alerts.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './tasks/tasks.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,6 +15,9 @@ import { TaskModule } from './tasks/tasks.module';
     AlertsModule,
     ScheduleModule.forRoot(),
     TaskModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
 })
 export class AppModule {}
