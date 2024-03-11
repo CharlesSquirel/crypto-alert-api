@@ -4,11 +4,13 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { catchError, lastValueFrom, map } from 'rxjs';
 
 @Injectable()
 export class CryptoApiService {
+  private readonly logger = new Logger(CryptoApiService.name);
   constructor(private http: HttpService) {}
 
   async getCrypto() {
@@ -22,7 +24,7 @@ export class CryptoApiService {
 
     const request = this.http
       .get(
-        `https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest`,
+        `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest`,
         {
           headers,
         },

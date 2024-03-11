@@ -1,11 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { CryptoApiService } from './crypto-api.service';
 
-@Controller('api')
+@Controller('crypto')
 export class CryptoApiController {
   constructor(private CryptoService: CryptoApiService) {}
 
-  @Get('crypto')
+  @Get()
   getCrypto() {
     return this.CryptoService.getCrypto();
   }

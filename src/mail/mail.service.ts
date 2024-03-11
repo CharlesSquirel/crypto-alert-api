@@ -12,6 +12,8 @@ export class MailService {
     context?: {
       id?: string;
       email?: string;
+      crypto?: string;
+      price?: string | unknown;
     },
   ) {
     try {
