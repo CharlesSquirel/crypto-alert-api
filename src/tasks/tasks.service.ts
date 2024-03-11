@@ -11,7 +11,7 @@ export class TasksService {
     private mailService: MailService,
   ) {}
 
-  @Cron(CronExpression.EVERY_WEEK)
+  @Cron(CronExpression.EVERY_DAY_AT_10AM)
   async checkCryptoPrices() {
     const prices = await this.cryptoService.getCrypto();
 

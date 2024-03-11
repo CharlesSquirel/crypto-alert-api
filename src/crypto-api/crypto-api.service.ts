@@ -4,11 +4,13 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { catchError, lastValueFrom, map } from 'rxjs';
 
 @Injectable()
 export class CryptoApiService {
+  private readonly logger = new Logger(CryptoApiService.name);
   constructor(private http: HttpService) {}
 
   async getCrypto() {
@@ -30,7 +32,6 @@ export class CryptoApiService {
       .pipe(
         map((response) => response.data),
         catchError((error) => {
-          console.log(error);
           if (error.response && error.response.status) {
             const statusCode = error.response.status;
             if (statusCode === 400) {
