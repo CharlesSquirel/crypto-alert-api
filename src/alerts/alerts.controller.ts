@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { Alert } from '@prisma/client';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from '../mail/mail.service';
 import { CreateAlertDto } from './dto';
 
 @Controller('alerts')
@@ -38,6 +38,7 @@ export class AlertsController {
           'Alert already exists with the same parameters.',
         );
       }
+
       throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }
