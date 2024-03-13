@@ -33,12 +33,11 @@ export class AlertsController {
       await this.mailService.sendEmail('create');
       return alert;
     } catch (error) {
-      if (error.code === 'P2002') {
+      if (error.status === 409) {
         throw new ConflictException(
           'Alert already exists with the same parameters.',
         );
       }
-
       throw new InternalServerErrorException('An unexpected error occurred.');
     }
   }

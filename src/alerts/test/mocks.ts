@@ -1,9 +1,14 @@
-import { CreateAlertDto, GetAlertDto } from './dto';
-
 export const mockedAlert = {
-  id: '1',
+  id: '124124124',
   createdAt: new Date('2024-03-12T15:08:07.990Z'),
-  email: 'test@test.pl',
+  email: 'test234234@test.pl',
+  crypto: 'BTH',
+  price: 50,
+  currency: 'USD',
+};
+
+export const mockedPostAlert = {
+  email: 'test324234@test.pl',
   crypto: 'BTH',
   price: 50,
   currency: 'USD',
@@ -35,3 +40,14 @@ export const mockedDb = [
     currency: 'USD',
   },
 ];
+
+export const prismaServiceMock = {
+  alert: {
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn().mockResolvedValue(mockedPostAlert),
+  },
+};
+
+export const mailServiceMock = {
+  sendEmail: jest.fn(),
+};
