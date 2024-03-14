@@ -39,12 +39,21 @@ export const mockedDb = [
     price: 5567,
     currency: 'USD',
   },
+  {
+    id: '4',
+    createdAt: new Date(),
+    email: 'test1@test.pl',
+    crypto: 'BTH',
+    price: 5567,
+    currency: 'USD',
+  },
 ];
 
 export const prismaServiceMock = {
   alert: {
     findFirst: jest.fn().mockResolvedValue(null),
     create: jest.fn().mockResolvedValue(mockedPostAlert),
+    findMany: jest.fn().mockResolvedValue(mockedDb),
   },
 };
 

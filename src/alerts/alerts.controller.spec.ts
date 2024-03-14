@@ -3,6 +3,7 @@ import * as request from 'supertest';
 import { AlertsService } from './alerts.service';
 import {
   mailServiceMock,
+  mockedDb,
   mockedPostAlert,
   prismaServiceMock,
 } from './test/mocks';
@@ -54,6 +55,39 @@ describe('AlertsController', () => {
         .post('/alerts')
         .send(mockedPostAlert);
       expect(response.status).toBe(409);
+    });
+  });
+
+  describe('/GET', () => {
+    // it('should return all alerts', async () => {
+    //   const response = await request(app.getHttpServer())
+    //     .get('/alerts')
+    //     .expect(200);
+    //   const expectedData = mockedDb.map((alert) => ({
+    //     ...alert,
+    //     createdAt: new Date(alert.createdAt).toISOString(),
+    //   }));
+    //   expect(response.body).toStrictEqual(expectedData);
+    // });
+
+    it('should return alerts with proper email', async () => {
+      const emailToTest = mockedDb[0].email;
+      prismaServiceMock.alert.findMany.mockResolvedValue(
+        mockedDb.filter((alert) => alert.email === emailToTest),
+      );
+      const response = await request(app.getHttpServer())
+        .get(`/alerts/${emailToTest}`)
+        .expect(200);
+      const transformDate = (data) => ({
+        ...data,
+        createdAt: new Date(data.createdAt).toISOString(),
+      });
+
+      const transformedResponse = response.body.map(transformDate);
+      const expectedData = mockedDb
+        .filter((alert) => alert.email === emailToTest)
+        .map(transformDate);
+      expect(transformedResponse).toStrictEqual(expectedData);
     });
   });
 });
