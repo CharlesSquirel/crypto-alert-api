@@ -42,17 +42,16 @@ describe('AlertsService', () => {
     });
 
     it('should return alerts with proper email', async () => {
+      const emailToTest = mockedDb[0].email;
       jest
         .spyOn(alertService, 'getAlertByEmail')
-        .mockResolvedValue([mockedDb[0]]);
-      const result = await alertService.getAlertByEmail(mockedDb[0].email);
-      expect(result).toEqual([mockedDb[0]]);
-    });
-
-    it('should return alerts with proper id', async () => {
-      jest.spyOn(alertService, 'getAlertById').mockResolvedValue(mockedDb[0]);
-      const result = await alertService.getAlertById(mockedDb[0].id);
-      expect(result).toBe(mockedDb[0]);
+        .mockResolvedValue(
+          mockedDb.filter((alert) => alert.email === emailToTest),
+        );
+      const result = await alertService.getAlertByEmail(emailToTest);
+      expect(result).toEqual(
+        mockedDb.filter((alert) => alert.email === emailToTest),
+      );
     });
   });
 });

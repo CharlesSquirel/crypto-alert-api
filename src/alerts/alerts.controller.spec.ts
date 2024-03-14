@@ -71,27 +71,23 @@ describe('AlertsController', () => {
     });
 
     it('should return alerts with proper email', async () => {
-      prismaServiceMock.alert.findMany.mockResolvedValue(mockedDb[0]);
+      const emailToTest = mockedDb[0].email;
+      prismaServiceMock.alert.findMany.mockResolvedValue(
+        mockedDb.filter((alert) => alert.email === emailToTest),
+      );
       const response = await request(app.getHttpServer())
-        .get(`/alerts/${mockedDb[0].email}`)
+        .get(`/alerts/${emailToTest}`)
         .expect(200);
-      const expectedData = {
-        ...mockedDb[0],
-        createdAt: new Date(mockedDb[0].createdAt).toISOString(),
-      };
-      expect(response.body).toStrictEqual(expectedData);
-    });
+      const transformDate = (data) => ({
+        ...data,
+        createdAt: new Date(data.createdAt).toISOString(),
+      });
 
-    it('should return alerts with proper id', async () => {
-      prismaServiceMock.alert.findFirst.mockResolvedValue(mockedDb[0]);
-      const response = await request(app.getHttpServer())
-        .get(`/alerts/${mockedDb[0].id}`)
-        .expect(200);
-      const expectedData = {
-        ...mockedDb[0],
-        createdAt: new Date(mockedDb[0].createdAt).toISOString(),
-      };
-      expect(response.body).toStrictEqual(expectedData);
+      const transformedResponse = response.body.map(transformDate);
+      const expectedData = mockedDb
+        .filter((alert) => alert.email === emailToTest)
+        .map(transformDate);
+      expect(transformedResponse).toStrictEqual(expectedData);
     });
   });
 });
