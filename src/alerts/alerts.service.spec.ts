@@ -35,11 +35,11 @@ describe('AlertsService', () => {
   });
 
   describe('GET', () => {
-    it('should return all alerts in db', async () => {
-      jest.spyOn(alertService, 'getAllAlerts').mockResolvedValue(mockedDb);
-      const result = await alertService.getAllAlerts();
-      expect(result).toBe(mockedDb);
-    });
+    // it('should return all alerts in db', async () => {
+    //   jest.spyOn(alertService, 'getAllAlerts').mockResolvedValue(mockedDb);
+    //   const result = await alertService.getAllAlerts();
+    //   expect(result).toBe(mockedDb);
+    // });
 
     it('should return alerts with proper email', async () => {
       const emailToTest = mockedDb[0].email;

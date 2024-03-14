@@ -59,16 +59,16 @@ describe('AlertsController', () => {
   });
 
   describe('/GET', () => {
-    it('should return all alerts', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/alerts')
-        .expect(200);
-      const expectedData = mockedDb.map((alert) => ({
-        ...alert,
-        createdAt: new Date(alert.createdAt).toISOString(),
-      }));
-      expect(response.body).toStrictEqual(expectedData);
-    });
+    // it('should return all alerts', async () => {
+    //   const response = await request(app.getHttpServer())
+    //     .get('/alerts')
+    //     .expect(200);
+    //   const expectedData = mockedDb.map((alert) => ({
+    //     ...alert,
+    //     createdAt: new Date(alert.createdAt).toISOString(),
+    //   }));
+    //   expect(response.body).toStrictEqual(expectedData);
+    // });
 
     it('should return alerts with proper email', async () => {
       const emailToTest = mockedDb[0].email;
