@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { AlertsService } from './alerts.service';
 import { Alert } from '@prisma/client';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from '../mail/mail.service';
 import { CreateAlertDto } from './dto';
 
 @Controller('alerts')
@@ -33,7 +33,7 @@ export class AlertsController {
       await this.mailService.sendEmail('create');
       return alert;
     } catch (error) {
-      if (error.code === 'P2002') {
+      if (error.status === 409) {
         throw new ConflictException(
           'Alert already exists with the same parameters.',
         );

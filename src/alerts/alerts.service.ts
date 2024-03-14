@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Alert } from '@prisma/client';
 import { CreateAlertDto } from './dto';
 
@@ -60,7 +60,13 @@ export class AlertsService {
         },
       });
     } catch (error) {
-      throw new ConflictException('Failed to create alert.');
+      if (error.status === 409) {
+        throw new ConflictException(
+          'Alert already exists with the same parameters.',
+        );
+      } else {
+        throw new ConflictException('Failed to create alert.');
+      }
     }
   }
 

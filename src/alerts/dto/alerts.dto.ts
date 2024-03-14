@@ -4,3 +4,8 @@ export interface CreateAlertDto {
   price: number;
   currency: string;
 }
+
+export interface GetAlertDto extends CreateAlertDto {
+  id: string;
+  createdAt: Date;
+}
