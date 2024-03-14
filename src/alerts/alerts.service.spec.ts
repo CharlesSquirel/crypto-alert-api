@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AlertsService } from '../alerts.service';
-import { AlertsController } from '../alerts.controller';
-import { PrismaService } from '../../prisma/prisma.service';
-import { MailService } from '../../mail/mail.service';
-import { mockedAlert } from './mocks';
+import { AlertsService } from './alerts.service';
+import { AlertsController } from './alerts.controller';
+import { PrismaService } from '../prisma/prisma.service';
+import { MailService } from '../mail/mail.service';
+import { mockedAlert } from './test/mocks';
 
 describe('AlertsService', () => {
   let alertService: AlertsService;

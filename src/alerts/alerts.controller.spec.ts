@@ -1,11 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { AlertsService } from '../alerts.service';
-import { mailServiceMock, mockedPostAlert, prismaServiceMock } from './mocks';
+import { AlertsService } from './alerts.service';
+import {
+  mailServiceMock,
+  mockedPostAlert,
+  prismaServiceMock,
+} from './test/mocks';
 import { INestApplication } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
-import { AlertsController } from '../alerts.controller';
-import { MailService } from '../../mail/mail.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { AlertsController } from './alerts.controller';
+import { MailService } from '../mail/mail.service';
 
 describe('AlertsController', () => {
   let app: INestApplication;
