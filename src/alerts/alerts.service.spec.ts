@@ -54,4 +54,19 @@ describe('AlertsService', () => {
       );
     });
   });
+
+  describe('DELETE', () => {
+    const idToDelete = mockedDb[0].id;
+    it('should correctly delete alert', async () => {
+      jest.spyOn(alertService, 'deleteAlert').mockResolvedValue(mockedDb[0]);
+      const result = await alertService.deleteAlert(idToDelete);
+      expect(result).toEqual(mockedDb[0]);
+    });
+
+    it('should not delete alert when the id does not exist', async () => {
+      jest.spyOn(alertService, 'deleteAlert').mockResolvedValue(null);
+      const result = await alertService.deleteAlert(idToDelete);
+      expect(result).toBe(null);
+    });
+  });
 });

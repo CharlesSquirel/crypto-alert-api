@@ -51,9 +51,10 @@ export const mockedDb = [
 
 export const prismaServiceMock = {
   alert: {
-    findFirst: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn(),
     create: jest.fn().mockResolvedValue(mockedPostAlert),
-    findMany: jest.fn().mockResolvedValue(mockedDb),
+    findMany: jest.fn(),
+    delete: jest.fn(),
   },
 };
 

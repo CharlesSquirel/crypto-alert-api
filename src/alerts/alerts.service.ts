@@ -101,7 +101,6 @@ export class AlertsService {
       if (!deletedAlert) {
         throw new NotFoundException(`Alert with ID ${id} not found.`);
       }
-
       return deletedAlert;
     } catch (error) {
       throw new ConflictException('Failed to delete alert.');

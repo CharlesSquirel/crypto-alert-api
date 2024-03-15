@@ -1,5 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 type EmailType = 'create' | 'delete' | 'reached';
 
@@ -44,8 +44,8 @@ export class MailService {
         const statusCode = error.response.status;
         if (statusCode === 400) {
           console.error('Bad Request error occurred.');
-        } else if (statusCode === 403) {
-          console.error('Forbidden error occurred.');
+        } else if (statusCode === 404) {
+          throw new NotFoundException(`Alert with this id not found.`);
         } else {
           console.error('Unexpected HTTP error occurred.');
         }

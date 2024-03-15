@@ -68,6 +68,9 @@ export class AlertsController {
         msg: 'Alert succesfully deleted',
       };
     } catch (error) {
+      if (error.status === 404) {
+        throw new NotFoundException(`Alert with ID ${id} not found.`);
+      }
       throw new ConflictException('Failed to delete alert.');
     }
   }
