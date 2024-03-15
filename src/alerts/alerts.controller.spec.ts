@@ -90,4 +90,25 @@ describe('AlertsController', () => {
       expect(transformedResponse).toStrictEqual(expectedData);
     });
   });
+  describe('/DELETE', () => {
+    const idToDelete = mockedDb[0].id;
+    it('should correctly delete alert with id', async () => {
+      prismaServiceMock.alert.delete.mockResolvedValue(mockedDb[0]);
+      const response = await request(app.getHttpServer())
+        .delete(`/alerts/${idToDelete}`)
+        .expect(200);
+      expect(response.body).toEqual({
+        msg: 'Alert succesfully deleted',
+      });
+    });
+
+    it('should not delete alert without existing id', async () => {
+      prismaServiceMock.alert.delete.mockResolvedValue(null);
+      prismaServiceMock.alert.findFirst.mockResolvedValue(null);
+      const response = await request(app.getHttpServer())
+        .delete(`/alerts/${idToDelete}`)
+        .expect(404);
+      expect(response.status).toBe(404);
+    });
+  });
 });
