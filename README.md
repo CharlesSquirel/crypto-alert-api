@@ -58,3 +58,4 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+Live Deploy: https://crypto-alert-api.onrender.com
